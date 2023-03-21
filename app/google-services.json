@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "263596067389",
+    "project_id": "road-safety-hackathon",
+    "storage_bucket": "road-safety-hackathon.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:263596067389:android:2e7b0df35c8baa75d67854",
+        "android_client_info": {
+          "package_name": "com.example.roadsafety"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "263596067389-op0uu4v29iffuckn3pcvr1kodb56bdij.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnEOXJDkEpimI46RbC9sWWYEHYQmKbD1A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "263596067389-op0uu4v29iffuckn3pcvr1kodb56bdij.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
