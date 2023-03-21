@@ -122,7 +122,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             z.setText(""+az);
             String phoneNo1 = "8074979796";
 
-            String SMS = "ALERT! It appears that the Vamsi Madugula may have been in a accident. You are receiving this message as he chosen you as emergency contact."+address;
+//            String SMS = "ALERT! It appears that the Vamsi Madugula may have been in a accident. You are receiving this message as he chosen you as emergency contact."+address;
+            String SMS = "ALERT! It appears that the Vamsi Madugula may have been in a accident. His Location is :"+ String.valueOf(Uri.parse("http://maps.google.com/maps?&saddr=" + latitude + "," + longitude));
             if(detectSuddenAcceleration(ax,ay,az)){
                 try{
                     Toast.makeText(this, "Crash Detected", Toast.LENGTH_SHORT).show();
