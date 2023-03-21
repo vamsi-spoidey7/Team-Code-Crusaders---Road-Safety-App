@@ -61,7 +61,7 @@
         android:background="@drawable/input_bg"
         android:drawableStart="@drawable/ic_baseline_phone"
         android:drawablePadding="10dp"
-        android:hint="Phone"
+        android:hint="Emergency Contact"
         android:maxLength="10"
         android:autofillHints="phone"
         android:inputType="phone"

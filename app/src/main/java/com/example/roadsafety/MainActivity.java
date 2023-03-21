@@ -28,10 +28,16 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -42,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE = 100;
     String latitude,longitude,address,city,country;
+    FirebaseAuth fAuth;
+    String phoneNo,userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         x = findViewById(R.id.x);
         y = findViewById(R.id.y);
         z = findViewById(R.id.z);
+
+        fAuth = FirebaseAuth.getInstance();
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -65,6 +75,23 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }else{
             Toast.makeText(this, "Sensor service not detected", Toast.LENGTH_SHORT).show();
         }
+
+        String uid = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
+        DatabaseReference root = FirebaseDatabase.getInstance().getReference("users").child(uid);
+        root.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    phoneNo = Objects.requireNonNull(snapshot.child("phone").getValue()).toString();
+                    userName = Objects.requireNonNull(snapshot.child("username").getValue()).toString();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         logoutbtn = findViewById(R.id.logoutbtn);
         logoutbtn.setOnClickListener(new View.OnClickListener() {
@@ -120,17 +147,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             x.setText(""+ax);
             y.setText(""+ay);
             z.setText(""+az);
-            String phoneNo1 = "8074979796";
 
-//            String SMS = "ALERT! It appears that the Vamsi Madugula may have been in a accident. You are receiving this message as he chosen you as emergency contact."+address;
-            String SMS = "ALERT! It appears that the Vamsi Madugula may have been in a accident. His Location is :"+ String.valueOf(Uri.parse("http://maps.google.com/maps?&saddr=" + latitude + "," + longitude));
+
+            String SMS = "ALERT! It appears that the "+userName+" may have been in a accident. His Location is :"+ String.valueOf(Uri.parse("http://maps.google.com/maps?&daddr=" + latitude + "," + longitude));
             if(detectSuddenAcceleration(ax,ay,az)){
                 try{
                     Toast.makeText(this, "Crash Detected", Toast.LENGTH_SHORT).show();
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                         if(checkSelfPermission(android.Manifest.permission.SEND_SMS)== PackageManager.PERMISSION_GRANTED){
                             SmsManager smsManager = SmsManager.getDefault();
-                            smsManager.sendTextMessage(phoneNo1,null,SMS,null,null);
+                            smsManager.sendTextMessage(phoneNo,null,SMS,null,null);
                         }else{
                             requestPermissions(new String[]{Manifest.permission.SEND_SMS},1);
                         }

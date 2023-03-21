@@ -79,6 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
                         reference.child(uid).setValue(userHelperClass);
                         Toast.makeText(RegisterActivity.this, "Account Created Successfully", Toast.LENGTH_SHORT).show();
                         rProgressBar.setVisibility(View.GONE);
+                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
